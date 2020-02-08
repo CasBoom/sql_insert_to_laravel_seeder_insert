@@ -1,7 +1,13 @@
+<form action="" method="post">
+    <textarea name="sql" rows="25" cols="75"></textarea><br>
+    <input type="submit" name="submit" value="Submit">
+</form>
+
 <?php
 
 //SQL insert to convert
-$sql_insert =  "";
+if(!isset($_POST['submit'])) die();
+$sql_insert =  $_POST['sql'];
 
 //builds the query
 function build_seed_query(array $field, array $value){
@@ -13,20 +19,4 @@ function build_seed_query(array $field, array $value){
     }
     $query = $query . "]);";
     return $query;
-}
-
-
-//takes all seperate lines
-$lines = explode(';',$sql_insert);
-
-//cuts up each line into its basic components
-foreach($lines as $line){
-    //selects which table and which row
-    $navigators = explode('`',$line);
-
-    //selects the values
-    $values = explode("'",$line);
-
-    //returns the query
-    echo build_seed_query($navigators, $values);
 }
