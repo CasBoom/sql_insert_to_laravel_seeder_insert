@@ -1,0 +1,32 @@
+<?php
+
+//SQL insert to convert
+$sql_insert =  "";
+
+//builds the query
+function build_seed_query(array $field, array $value){
+    //builds the query
+    $query = "<br>DB::table('".$field[1]."')->insert([<br>";
+    //skips over all the extra lines
+    for($i=3; $i<count($field);$i+=2){
+        $query = $query."'".$field[$i]."' => '".$value[$i-2]."',<br>";
+    }
+    $query = $query . "]);";
+    return $query;
+}
+
+
+//takes all seperate lines
+$lines = explode(';',$sql_insert);
+
+//cuts up each line into its basic components
+foreach($lines as $line){
+    //selects which table and which row
+    $navigators = explode('`',$line);
+
+    //selects the values
+    $values = explode("'",$line);
+
+    //returns the query
+    echo build_seed_query($navigators, $values);
+}
